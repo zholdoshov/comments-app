@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import './App.css'
-import { getComments } from './api/comments';
+import { createComment, getComments } from './api/comments';
 import CommentList from './components/CommentList';
+import CommentForm from './components/CommentForm';
 
 function App() {
   const [comments, setComments] = useState([]);
@@ -19,9 +20,19 @@ function App() {
     fetchComments();
   }, []);
 
+  async function handleAdd(text) {
+    try {
+      const newComment = await createComment(text);
+      setComments((prev) => [newComment, ...prev]);
+    } catch (error) {
+      console.error("Failed to create comment", error);
+    }
+  }
+
   return (
     <>
       <h1>All comments</h1>
+      <CommentForm onAdd={handleAdd} />
       <CommentList
         comments={comments}
       />

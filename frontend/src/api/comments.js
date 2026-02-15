@@ -1,7 +1,10 @@
 const BASE_URL = "http://localhost:3005/comments";
 
-async function request(url) {
-  const res = await fetch(url);
+async function request(url, options = {}) {
+  const res = await fetch(url, {
+    headers: { "Content-Type": "application/json" },
+    ...options,
+  });
 
   if (!res.ok) {
     const message = await res.text();
@@ -14,4 +17,12 @@ async function request(url) {
 // get all comments
 export async function getComments() {
     return request(BASE_URL);
+}
+
+// create
+export async function createComment(text) {
+    return request(BASE_URL, {
+        method: "POST",
+        body: JSON.stringify({text})
+    });
 }
