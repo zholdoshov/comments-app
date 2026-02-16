@@ -26,3 +26,18 @@ export async function createComment(text) {
         body: JSON.stringify({text})
     });
 }
+
+// update
+export async function updateComment(id, text) {
+    return request(`${BASE_URL}/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ text })
+    });
+}
+
+// delete
+export async function deleteComment(id) {
+    return request(`${BASE_URL}/${id}`, {
+        method: "DELETE",
+    });
+}

@@ -7,8 +7,6 @@ export default function CommentForm({ onAdd }) {
     async function handleAdd(e) {
         e.preventDefault();
 
-        console.log(e.target.value);
-
         if (!text.trim()) return;
 
         try {

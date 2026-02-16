@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css'
-import { createComment, getComments } from './api/comments';
+import { createComment, deleteComment, getComments, updateComment } from './api/comments';
 import CommentList from './components/CommentList';
 import CommentForm from './components/CommentForm';
 
@@ -29,13 +29,44 @@ function App() {
     }
   }
 
+  async function handleUpdate(id, text) {
+    try {
+      const updatedComment = await updateComment(id, text);
+      setComments((prev) =>
+        prev.map((comment) =>
+          comment.id === id ? updatedComment : comment
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update comment", error);
+    }
+  }
+
+  async function handleDelete(id) {
+    try {
+      await deleteComment(id);
+      setComments((prev) =>
+        prev.filter((comment) => comment.id !== id)
+      );
+    } catch (error) {
+      console.error("Failed to delete comment", error);
+    }
+  }
+
   return (
     <>
       <h1>All comments</h1>
       <CommentForm onAdd={handleAdd} />
-      <CommentList
-        comments={comments}
-      />
+      {
+        comments.length === 0 ? (
+          <h2>No comments yet!</h2>
+        ) : (
+          <CommentList
+            comments={comments}
+            onDelete={handleDelete}
+            onUpdate={handleUpdate}
+          />)
+      };
     </>
   )
 }

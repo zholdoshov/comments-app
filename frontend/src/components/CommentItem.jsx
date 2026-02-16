@@ -1,4 +1,31 @@
-export default function CommentItem({ comment }) {
+import { useState } from "react";
+
+export default function CommentItem({ comment, onDelete, onUpdate }) {
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedText, setEditedText] = useState(comment.text);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
+
+    async function handleDelete() {
+        try {
+            setIsDeleting(true);
+            await onDelete(comment.id);
+        } finally {
+            setIsDeleting(false);
+        }
+    }
+
+    async function handleSave() {
+        if (!editedText.trim()) return;
+
+        try {
+            setIsUpdating(true);
+            await onUpdate(comment.id, editedText);
+            setIsEditing(false);
+        } finally {
+            setIsUpdating(false);
+        }
+    }
 
     return (
         <div className="comment-container">
@@ -11,10 +38,58 @@ export default function CommentItem({ comment }) {
                     <p>{comment.author}</p>
                     <p>{comment.date}</p>
                 </div>
+
+                <div className="comment-author-actions">
+                    {isEditing ? (
+                        <>
+                            <button
+                                onClick={handleSave}
+                                disabled={isUpdating}
+                            >
+                                {isUpdating ? "Saving..." : "Save"}
+                            </button>
+
+                            <button
+                                onClick={() => {
+                                    setIsEditing(false);
+                                    setEditedText(comment.text);
+                                }}
+                                disabled={isUpdating}
+                            >
+                                Cancel
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button
+                                onClick={() => setIsEditing(true)}
+                                disabled={isDeleting}
+                            >
+                                Edit
+                            </button>
+
+                            <button
+                                onClick={handleDelete}
+                                disabled={isDeleting}
+                            >
+                                {isDeleting ? "Deleting..." : "Delete"}
+                            </button>
+                        </>
+                    )}
+                </div>
             </div>
 
             <div className="comment-body">
-                <p>{comment.text}</p>
+                {isEditing ? (
+                    <textarea
+                        value={editedText}
+                        onChange={(e) => setEditedText(e.target.value)}
+                        disabled={isUpdating}
+                    />
+                ) : (
+                    <p>{comment.text}</p>
+                )}
+
                 <p>👍 {comment.likes}</p>
             </div>
         </div>
