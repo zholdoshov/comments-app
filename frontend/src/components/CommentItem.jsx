@@ -32,7 +32,11 @@ export default function CommentItem({ comment, onDelete, onUpdate }) {
             <div className="comment-header">
                 <div className="comment-author-info">
                     <img
-                        src={comment.image}
+                        src={
+                            comment.image
+                                ? comment.image
+                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4YreOWfDX3kK-QLAbAL4ufCPc84ol2MA8Xg&s"
+                        }
                         alt="User profile"
                     />
                     <p>{comment.author}</p>

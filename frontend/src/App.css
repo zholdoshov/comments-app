@@ -10,9 +10,45 @@
   gap: 20px;
 }
 
+.comment-container {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid gray;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.comment-author-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
 .comment-author-info img {
+    border: 1px solid grey;
+    border-radius: 50%;
     width: 80px;
     height: 80px;
+}
+
+.comment-author-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.comment-body {
+  padding-left: 100px;
+}
+
+.comment-body textarea {
+  width: 100%;
+  field-sizing: content;
+  padding: 5px;
 }
 
 .form-container {

@@ -59,7 +59,7 @@ function App() {
       <CommentForm onAdd={handleAdd} />
       {
         comments.length === 0 ? (
-          <h2>No comments yet!</h2>
+          <p>No comments yet!</p>
         ) : (
           <CommentList
             comments={comments}
